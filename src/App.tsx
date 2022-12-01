@@ -1,5 +1,6 @@
 import {useState} from 'react';
 import Login from './components/Login';
+import SelectPlaylist from './components/SelectPlaylist';
 
 type AppState =
     | { status: 'unauthenticated' }
@@ -27,7 +28,7 @@ const App = () => {
         case 'unauthenticated':
             return <Login onLogin={handleLogin} />;
         case 'authenticated':
-            return 'Heyooo';
+            return <SelectPlaylist token={appState.token} />;
     }
 };
 

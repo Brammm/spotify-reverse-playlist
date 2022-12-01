@@ -54,7 +54,7 @@ const Login = ({onLogin}: Props) => {
             new URLSearchParams({
                 response_type: 'code',
                 client_id: import.meta.env['VITE_SPOTIFY_CLIENT_ID'],
-                scope: 'playlist-modify-public',
+                scope: 'playlist-read-private playlist-modify-public',
                 redirect_uri: redirectUri,
                 state,
                 code_challenge_method: 'S256',
