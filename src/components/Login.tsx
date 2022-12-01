@@ -1,23 +1,22 @@
-import React from 'react'
-import {v4 as uuidv4} from 'uuid'
+import {v4 as uuidv4} from 'uuid';
 import axios from 'axios';
 import {generateCodeChallengeFromVerifier, generateCodeVerifier} from '../lib/functions';
 
 type Props = {
-    onLogin: (token: string) => void;
+    onLogin: (token: string) => void
 }
 
 const Login = ({onLogin}: Props) => {
-    const currentUrl = new URL(window.location.href)
-    const redirectUri = currentUrl.origin + '/callback'
-    const code = currentUrl.searchParams.get('code')
-    const state = currentUrl.searchParams.get('state')
-    const storedState = window.sessionStorage.getItem('state')
-    const storedCodeVerifier = window.sessionStorage.getItem('codeVerifier')
+    const currentUrl = new URL(window.location.href);
+    const redirectUri = currentUrl.origin + '/callback';
+    const code = currentUrl.searchParams.get('code');
+    const state = currentUrl.searchParams.get('state');
+    const storedState = window.sessionStorage.getItem('state');
+    const storedCodeVerifier = window.sessionStorage.getItem('codeVerifier');
 
     if (currentUrl.pathname === '/callback' && code) {
         if (state !== storedState) {
-            window.location.href = window.location.origin
+            window.location.href = window.location.origin;
         }
 
         // TODO: handle error states
@@ -33,23 +32,23 @@ const Login = ({onLogin}: Props) => {
                 headers: {
                     authorization: 'Basic ' + import.meta.env['VITE_SPOTIFY_AUTH'],
                     'content-type': 'application/x-www-form-urlencoded',
-                }
-            }
+                },
+            },
         ).then(response => {
             if (response.data.access_token) {
                 onLogin(response.data.access_token);
             }
-        })
+        });
 
         return <p>Logging in</p>;
     }
 
     const handleLogin = async () => {
-        const state = uuidv4()
-        const codeVerifier = generateCodeVerifier()
+        const state = uuidv4();
+        const codeVerifier = generateCodeVerifier();
         const codeChallenge = await generateCodeChallengeFromVerifier(codeVerifier);
-        window.sessionStorage.setItem('state', state)
-        window.sessionStorage.setItem('codeVerifier', codeVerifier)
+        window.sessionStorage.setItem('state', state);
+        window.sessionStorage.setItem('codeVerifier', codeVerifier);
 
         window.location.href = 'https://accounts.spotify.com/authorize?' +
             new URLSearchParams({
@@ -60,8 +59,8 @@ const Login = ({onLogin}: Props) => {
                 state,
                 code_challenge_method: 'S256',
                 code_challenge: codeChallenge,
-            }).toString()
-    }
+            }).toString();
+    };
 
     return (
         <div>

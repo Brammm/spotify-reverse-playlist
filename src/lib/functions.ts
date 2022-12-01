@@ -18,7 +18,7 @@ export function generateCodeVerifier() {
     var array = new Uint32Array(8);
 
     window.crypto.getRandomValues(array);
-    return Array.from(array, dec2hex).join("");
+    return Array.from(array, dec2hex).join('');
 }
 
 function sha256(plain: string): Promise<ArrayBuffer> {
