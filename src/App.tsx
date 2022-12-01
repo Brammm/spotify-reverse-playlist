@@ -17,6 +17,7 @@ const App = () => {
     })
 
     const handleLogin = (token: string) => {
+        // TODO: handle token expiry
         setAppState({status: 'authenticated', token})
         window.sessionStorage.setItem('token', token);
         window.history.replaceState({}, '', window.location.origin)

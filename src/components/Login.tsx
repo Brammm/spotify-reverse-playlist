@@ -20,6 +20,7 @@ const Login = ({onLogin}: Props) => {
             window.location.href = window.location.origin
         }
 
+        // TODO: handle error states
         axios.post(
             'https://accounts.spotify.com/api/token',
             {
