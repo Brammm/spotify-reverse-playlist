@@ -6,10 +6,19 @@ type AppState =
     | { status: 'authenticated', token: string }
 
 const App = () => {
-    const [appState, setAppState] = useState<AppState>({status: 'unauthenticated'})
+    const [appState, setAppState] = useState<AppState>(() => {
+        const token = window.sessionStorage.getItem('token')
+
+        if (token) {
+            return {status: 'authenticated', token}
+        }
+
+        return {status: 'unauthenticated'}
+    })
 
     const handleLogin = (token: string) => {
         setAppState({status: 'authenticated', token})
+        window.sessionStorage.setItem('token', token);
         window.history.replaceState({}, '', window.location.origin)
     }
 
