@@ -6,6 +6,8 @@ type Props = {
     token: string;
 }
 
+type Status = 'loading' | 'loaded' | 'reversing' | 'success';
+
 type Playlist = {
     id: string;
     name: string;
@@ -18,6 +20,7 @@ type Track = {
 
 const SelectPlaylist = ({token}: Props) => {
     const [playlists, setPlaylists] = useState<Playlist[]>([]);
+    const [status, setStatus] = useState<Status>('loading');
 
     useEffect(() => {
         (async () => {
@@ -30,10 +33,12 @@ const SelectPlaylist = ({token}: Props) => {
             }
 
             setPlaylists(playlists);
+            setStatus('loaded')
         })();
     }, []);
 
     const reversePlaylist = async (id: string) => {
+        setStatus('reversing');
         // Get selected playlist info and tracks in chunks
         let {data: {public: publicPlaylist, name, tracks: {next: url, items}}}: any = await axios.get(
             'https://api.spotify.com/v1/playlists/' + id,
@@ -61,21 +66,25 @@ const SelectPlaylist = ({token}: Props) => {
                 {headers: {authorization: 'Bearer ' + token}}
             );
         }
-
-        alert('Reversed playlist');
+        setStatus('success');
     };
 
     return (
         <Layout>
             <p className="mb-4">Select the playlist you wish to revert. A new playlist will be created with the same name and have " - Reversed" appended to it. </p>
             <p className="mb-4">If the selected playlist was set as private, the reversed one will be created as private as well.</p>
-            <ul>
-                {playlists.map(playlist => (
-                    <li key={playlist.id}>
-                        <button className="text-white hover:underline text-left" onClick={() => reversePlaylist(playlist.id)}>{playlist.name}</button>
-                    </li>
-                ))}
-            </ul>
+            {status === 'loading' && <p>Loading ...</p>}
+            {status === 'loaded' && (
+                <ul>
+                    {playlists.map(playlist => (
+                        <li key={playlist.id}>
+                            <button className="text-white hover:underline text-left" onClick={() => reversePlaylist(playlist.id)}>{playlist.name}</button>
+                        </li>
+                    ))}
+                </ul>
+            )}
+            {status === 'reversing' && <p>Creating reversed playlist ...</p>}
+            {status === 'success' && <p>Done!</p>}
         </Layout>
     );
 };
