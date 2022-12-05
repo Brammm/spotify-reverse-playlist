@@ -65,7 +65,8 @@ const Login = ({onLogin}: Props) => {
 
     return (
         <Layout>
-            <button onClick={handleLogin}>Log in with Spotify</button>
+            <p className="text-lg leading-tight">Ever had a playlist that you'd really like to listen to, but in reverse order? For example a Wrapped playlist? Authorize this app, select your playlist and a duplicate will be made with all the same tracks, but with, you guessed it, a reverse order. Does what it says on the tin.</p>
+            <button className="rounded-full w-full text-white uppercase py-2 bg-green mt-10" onClick={handleLogin}>Log in with Spotify</button>
         </Layout>
     );
 };

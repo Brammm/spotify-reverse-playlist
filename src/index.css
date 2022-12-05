@@ -2,14 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-    background: #121212;
-    color: #a0a0a0;
-}
-
-a {
-    color: #fff;
-}
-a:hover {
-    text-decoration: underline;
+@layer base {
+    body {
+        @apply bg-bg text-text;
+        font-family: 'Montserrat', sans-serif;
+    }
+    a {
+        @apply text-white;
+    }
+    a:hover {
+        @apply underline;
+    }
 }
