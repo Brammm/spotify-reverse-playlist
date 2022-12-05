@@ -4,7 +4,7 @@ const Layout = ({children}: PropsWithChildren) => {
     return (
         <div className="flex flex-col h-screen justify-between max-w-lg mx-auto px-2 lg:py-0">
             <header className="py-10">
-                <h1 className="text-white font-extrabold text-3xl">Reverse a Spotify Playlist</h1>
+                <h1 className="text-white font-extrabold text-3xl">Playlist Reverser</h1>
             </header>
             <main className="mb-auto">
                 {children}

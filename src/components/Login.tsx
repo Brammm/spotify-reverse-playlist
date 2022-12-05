@@ -73,11 +73,11 @@ const Login = ({onLogin, onError, error}: Props) => {
     return (
         <Layout>
             <p className="text-lg leading-tight">Ever had a playlist that you'd really like to listen to, but in reverse
-                order? For example a Wrapped playlist? Authorize this app, select your playlist and a duplicate will be
+                order? For example a top 100 playlist that starts with number 1? Authorize your streaming service, select your playlist and a duplicate playlist will be
                 made with all the same tracks, but with, you guessed it, a reverse order. Does what it says on the
                 tin.</p>
-            <button className="rounded-full w-full text-white uppercase py-2 bg-green mt-10" onClick={handleLogin}>Log
-                in with Spotify
+            <button className="rounded-full w-full text-white uppercase py-2 bg-green mt-10" onClick={handleLogin}>
+                Log in with Spotify
             </button>
             {error === 'access_denied' && <p className="text-center">You need to authorize this app to use it.</p>}
             {error === 'token_failure' && <p className="text-center">Something went wrong while trying to authenticate. Please try again.</p>}
