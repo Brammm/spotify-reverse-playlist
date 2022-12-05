@@ -1,6 +1,7 @@
 import {v4 as uuidv4} from 'uuid';
 import axios from 'axios';
 import {generateCodeChallengeFromVerifier, generateCodeVerifier} from '../lib/functions';
+import Layout from './Layout';
 
 type Props = {
     onLogin: (token: string) => void
@@ -63,10 +64,9 @@ const Login = ({onLogin}: Props) => {
     };
 
     return (
-        <div>
+        <Layout>
             <button onClick={handleLogin}>Log in with Spotify</button>
-            <p>Made by <a href="https://twitter.com/Brammm">Brammm</a>, <a href="https://github.com/Brammm/spotify-reverse-playlist">code</a> available on Github.</p>
-        </div>
+        </Layout>
     );
 };
 

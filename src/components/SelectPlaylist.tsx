@@ -1,5 +1,6 @@
 import {useEffect, useState} from 'react';
 import axios from 'axios';
+import Layout from './Layout';
 
 type Props = {
     token: string;
@@ -65,7 +66,7 @@ const SelectPlaylist = ({token}: Props) => {
     };
 
     return (
-        <div>
+        <Layout>
             <h1>Select playlist</h1>
             <ul>
                 {playlists.map(playlist => (
@@ -74,8 +75,7 @@ const SelectPlaylist = ({token}: Props) => {
                     </li>
                 ))}
             </ul>
-            <p>Made by <a href="https://twitter.com/Brammm">Brammm</a>, <a href="https://github.com/Brammm/spotify-reverse-playlist">code</a> available on Github.</p>
-        </div>
+        </Layout>
     );
 };
 
