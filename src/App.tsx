@@ -3,7 +3,7 @@ import Login from './components/Login';
 import SelectPlaylist from './components/SelectPlaylist';
 
 type AppState =
-    | { status: 'unauthenticated' }
+    | { status: 'unauthenticated', error?: string }
     | { status: 'authenticated', token: string }
 
 const App = () => {
@@ -23,10 +23,14 @@ const App = () => {
         window.sessionStorage.setItem('token', token);
         window.history.replaceState({}, '', window.location.origin);
     };
+    const handleError = (error: string) => {
+        setAppState({status: 'unauthenticated', error});
+        window.history.replaceState({}, '', window.location.origin);
+    };
 
     switch (appState.status) {
         case 'unauthenticated':
-            return <Login onLogin={handleLogin} />;
+            return <Login onLogin={handleLogin} onError={handleError} error={appState.error} />;
         case 'authenticated':
             return <SelectPlaylist token={appState.token} />;
     }

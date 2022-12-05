@@ -5,23 +5,27 @@ import Layout from './Layout';
 
 type Props = {
     onLogin: (token: string) => void
+    onError: (error: string) => void
+    error?: string
 }
 
-const Login = ({onLogin}: Props) => {
+const Login = ({onLogin, onError, error}: Props) => {
     const currentUrl = new URL(window.location.href);
     const redirectUri = currentUrl.origin + '/callback';
     const code = currentUrl.searchParams.get('code');
     const state = currentUrl.searchParams.get('state');
     const storedState = window.sessionStorage.getItem('state');
     const storedCodeVerifier = window.sessionStorage.getItem('codeVerifier');
-    const error = currentUrl.searchParams.get('error');
+    const authenticationError = currentUrl.searchParams.get('error');
+    if (authenticationError) {
+        onError(authenticationError);
+    }
 
     if (currentUrl.pathname === '/callback' && code) {
         if (state !== storedState) {
             window.location.href = window.location.origin;
         }
 
-        // TODO: handle error states
         axios.post(
             'https://accounts.spotify.com/api/token',
             {
@@ -40,9 +44,11 @@ const Login = ({onLogin}: Props) => {
             if (response.data.access_token) {
                 onLogin(response.data.access_token);
             }
+        }).catch(() => {
+            onError('token_failure');
         });
 
-        return <p>Logging in</p>;
+        return <Layout><p>Logging in</p></Layout>;
     }
 
     const handleLogin = async () => {
@@ -66,9 +72,15 @@ const Login = ({onLogin}: Props) => {
 
     return (
         <Layout>
-            <p className="text-lg leading-tight">Ever had a playlist that you'd really like to listen to, but in reverse order? For example a Wrapped playlist? Authorize this app, select your playlist and a duplicate will be made with all the same tracks, but with, you guessed it, a reverse order. Does what it says on the tin.</p>
-            <button className="rounded-full w-full text-white uppercase py-2 bg-green mt-10" onClick={handleLogin}>Log in with Spotify</button>
+            <p className="text-lg leading-tight">Ever had a playlist that you'd really like to listen to, but in reverse
+                order? For example a Wrapped playlist? Authorize this app, select your playlist and a duplicate will be
+                made with all the same tracks, but with, you guessed it, a reverse order. Does what it says on the
+                tin.</p>
+            <button className="rounded-full w-full text-white uppercase py-2 bg-green mt-10" onClick={handleLogin}>Log
+                in with Spotify
+            </button>
             {error === 'access_denied' && <p className="text-center">You need to authorize this app to use it.</p>}
+            {error === 'token_failure' && <p className="text-center">Something went wrong while trying to authenticate. Please try again.</p>}
         </Layout>
     );
 };
