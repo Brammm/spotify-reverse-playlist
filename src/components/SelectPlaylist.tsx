@@ -74,6 +74,7 @@ const SelectPlaylist = ({token}: Props) => {
                     </li>
                 ))}
             </ul>
+            <p>Made by <a href="https://twitter.com/Brammm">Brammm</a>, <a href="https://github.com/Brammm/spotify-reverse-playlist">code</a> available on Github.</p>
         </div>
     );
 };
