@@ -67,11 +67,12 @@ const SelectPlaylist = ({token}: Props) => {
 
     return (
         <Layout>
-            <h1>Select playlist</h1>
+            <p className="mb-4">Select the playlist you wish to revert. A new playlist will be created with the same name and have " - Reversed" appended to it. </p>
+            <p className="mb-4">If the selected playlist was set as private, the reversed one will be created as private as well.</p>
             <ul>
                 {playlists.map(playlist => (
                     <li key={playlist.id}>
-                        <button onClick={() => reversePlaylist(playlist.id)}>{playlist.name}</button>
+                        <button className="text-white hover:underline text-left" onClick={() => reversePlaylist(playlist.id)}>{playlist.name}</button>
                     </li>
                 ))}
             </ul>
