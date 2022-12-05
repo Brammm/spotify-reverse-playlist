@@ -22,6 +22,7 @@ type Track = {
 const SelectPlaylist = ({token, logout}: Props) => {
     const [playlists, setPlaylists] = useState<Playlist[]>([]);
     const [status, setStatus] = useState<Status>('loading');
+    const [openPlaylist, setOpenPlaylist] = useState<string|undefined>();
 
     useEffect(() => {
         (async () => {
@@ -50,6 +51,7 @@ const SelectPlaylist = ({token, logout}: Props) => {
                 'https://api.spotify.com/v1/playlists/' + id,
                 {headers: {authorization: 'Bearer ' + token}});
             let chunks = [items.map((item: { track: Track }) => item.track.uri)];
+
             while (url) {
                 let {data}: any = await axios.get(url, {headers: {authorization: 'Bearer ' + token}});
                 url = data.next;
@@ -88,7 +90,24 @@ const SelectPlaylist = ({token, logout}: Props) => {
                 <ul>
                     {playlists.map(playlist => (
                         <li key={playlist.id}>
-                            <button className="text-white hover:underline text-left" onClick={() => reversePlaylist(playlist.id)}>{playlist.name}</button>
+                            <div className="flex">
+                                <button className="mr-2 hover:text-white" onClick={() => setOpenPlaylist(playlist.id)}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
+                                    </svg>
+                                </button>
+                                <button className="text-white hover:underline text-left" onClick={() => reversePlaylist(playlist.id)}>{playlist.name}</button>
+                            </div>
+                            {openPlaylist === playlist.id && (
+                                <iframe
+                                    title="playlist"
+                                    src={`https://open.spotify.com/embed/playlist/${openPlaylist}?utm_source=generator`}
+                                    width="100%"
+                                    height="380"
+                                    allowFullScreen={true}
+                                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                                />
+                            )}
                         </li>
                     ))}
                 </ul>
